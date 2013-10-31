@@ -53,10 +53,16 @@ as illustrated in the gray triangular section below:
 In this case I'm going to divide the set of pairs ```(i, j)``` such that ```0 ≤ j < i < N``` into four 
 equal triangular regions as illustrated below: 
 ![Diagram illustrating region divided into four triangular sections](https://docs.google.com/drawings/d/12hyDoIqfpP2DTl5Uk97gcbIf94sABKHG4LTagZKd0nk/pub?w=960&h=720)
-Formally the four sections can be described by
+Formally the four sections can be described by the following ranges, each of which can be turned into a pair of nested
+loops similar to the pair of loops in the serial solution above:
 * Lower left: ```0 ≤ j < i < N/2```
 * Bottom right: ```N/2 ≤ j + N/2 < i < N```
 * Top right: ```N/2 ≤ j < i < N```
 * Center: ```N/2 ≤ i ≤ j + N/2 < N```
 
-Each of these ranges can be turned into a pair of nested loops similar to the pair of loops in the serial solution above.
+Our strategy, then, is:
+* Create a thread for each of these sections.
+* Have each thread find the minimum for that section.
+* Have each thread update a global minimum when it finishes.
+* Wait for each thread to finish.
+* Report the resulting global minimum.
