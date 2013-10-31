@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class SerialMinimumPairwiseDistanceTest {
 
+	public static final int NUM_VALUES = 1000000;
 	private MinimumPairwiseDistance mpd;
 
 	@Before
@@ -41,4 +42,15 @@ public class SerialMinimumPairwiseDistanceTest {
 		int minimum = mpd.minimumPairwiseDistance(values);
 		assertEquals(12624, minimum);
 	}
+	
+	@Test
+	public void testLargeSequence() {
+		int[] values = new int[NUM_VALUES];
+		for (int i=0; i<NUM_VALUES; ++i) {
+			values[i] = i; 
+		}
+		int minimum = mpd.minimumPairwiseDistance(values);
+		assertEquals(1,  minimum);
+	}
+	
 }
