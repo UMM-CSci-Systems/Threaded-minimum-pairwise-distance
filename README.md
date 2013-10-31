@@ -66,3 +66,23 @@ Our strategy, then, is:
 * Have each thread update a global minimum when it finishes.
 * Wait for each thread to finish.
 * Report the resulting global minimum.
+
+There are a bunch of ways one could do this, but I created an (inner) class for each of the four sections 
+(using creative names like ```LowerLeft```). Each of these implemented ```Runnable``` and their ```run()``` 
+method was very similar to the nested loops in the serial solution above, but with the bounds on the loops
+changed to cover just the pairs assigned to that section. When the nested loops finish, I call a 
+```updateGlobalResult(localResult)``` method in ```ThreadedMinimumPairwiseDistance``` that compares
+```localResult``` to ```globalResult``` updating ```globalResult``` to be ```localResult``` if ```localResult```
+is smaller than the previous ```globalResult```.
+
+While creating four inner classes is arguably kind of gross, having them as _inner_ classes does simplify
+a few things because we can directly access fields (like the ```values``` array) and methods 
+(like ```updateGlobalResult()```) in the containing class. You can make all this work without the inner classes,
+but you'll need to find other ways to pass information around.
+
+Make sure to wait for all the threads to finish (I'd use ```join()```) before returning the global 
+minimum. Remember that ```.start()``` will return _immediately_ even if the actual run method has a done of
+complex work to do, so after you start them all, you have to wait for them all to finish before you can continue.
+
+You also need to remember to synchronize the ```updateGlobalResult()``` method so that two threads can't
+collide and mess each other up with they try to call that method at the same time.
