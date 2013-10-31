@@ -32,11 +32,24 @@ public class ThreadTimingTest {
         endTime = System.currentTimeMillis();
         long threadedTime = endTime - startTime;
         
-        System.out.println(serialTime);
-        System.out.println(threadedTime);
+        System.out.println("The serial time was " + serialTime + "ms");
+        System.out.println("The threaded time was " + threadedTime + "ms");
 
         assertArrayEquals(serialValues, threadedValues);
-        assertTrue(serialTime / 1.5 >  threadedTime);
-    }
-	
+        // If you only have two cores, you're unlikely to see a 3-fold improvement in performance and
+        // the best you can hope for is something between less than a 2-fold improvement. If you have
+        // 4+ cores, however, a 3-fold improvement isn't at all implausible. Most of the machines in
+        // the lab are now 4+ cores, but there are still a few old ones that are just dual core
+        // boxes. 
+        // 
+        // If this test fails, then look at the serial time and the threaded time and confirm that
+        // the threaded time is in fact better than the serial time; if it's not then you problem have
+        // an issue with your threading. If the threaded time is better, but not 3-fold better, then
+        // pull up the system monitor on that box and see how many cores you have. If it's only 2 then
+        // either change the improvement factor from 3 to something like 1.5, or try a different box
+        // with more cores.
+        assertTrue("If this fails, see if the serial time is at least somewhat larger than the threaded time", 
+        		serialTime / 3 >  threadedTime);
+	}
+
 }
