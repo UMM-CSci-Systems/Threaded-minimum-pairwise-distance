@@ -8,17 +8,24 @@ to parallize an expensive (in this case O(N^2)) computation and see that this in
 Given an array ```values``` of ```N``` integers, the task is to find the smallest absolute distance between 
 any two elements, i.e., minimize ```abs(values[i] - values[j])``` over ```0 ≤ i < j < N```. 
 
+## The project structure
+
+The ```test``` directory has three sets of tests:
+* ```test/mpd/SerialMinimumPairwiseDistanceTest.java``` contains tests for the serial (non-threaded, non-parallel) solution. Since we provide a complete, working serial solution, all these tests should pass out of the box.
+* ```test/mpd/ThreadedMinimumPairwiseDistanceTest.java``` contains tests for the threaded version. A key part of your job is to implement the threaded version so that these pass **Note:** There's no good way for the tests to know that you actually used threads correctly, or at all. The tests can check that you found the right answer, but not really how you got there. You could in fact just drop our serial solution in and it would make these tests pass.
+* ```test/mpd/ThreadTimingTest.java``` contains a timing test that attempts to address the weakness mentioned above. This test runs both the serial and the threaded versions on the same large-ish set of data, and compares the time required in each case. The assertion, then, is that the threaded version should be at least 3 times faster than the serial version. _This will only be true on a box with at least four cores._ On a single core box (if you can find one) the threaded version is likely to actually be a little slower, and on a dual core box the best speedup you can hope for would be something less than a factor of 2. Most of the machines in the lab now have at least 4 cores, however, so this should generally pass if you have your threading right. If this test is not passing, use a system monitor to determine how many cores your box has, and check the times printed out by the test. If your box only has 2 cores and your speedup is a factor of 1.5 or better, you're probably OK. If your box has 8 cores and your speedup is only 2.5 then you've probably got something wrong and should ask someone else to look it over with you.
+
+The ```src``` directory:
+* ```src/mpd/MinimumPairwiseDistance.java``` is a simple interface that specifies a single method ```int minimumPairwiseDistance(int[] values)``` that takes an array of ```int``` values and returns an ```int``` that should be the minimum distance (difference) between any two values in the array.
+* ```src/mpd/SerialMinimumPairwiseDistance.java``` is a complete serial (non-threaded, non-parallel) solution to the problem. This works and you shouldn't need to change anything here. The loop structure, though, should be a useful hint for how you might want to structure the loops in your threaded solution.
+* ```src/mpd/ThreadedMinimumPairwiseDistance.java``` is a stub for the threaded version. This is where your work will go; see below for hints on the structure of the solution.
+
 ## The simple serial solution
 
-In its simple form this is an O(N^2) task because we must compare each of the N^2 pairs of values, or half of 
-that if we take advantage of symmetry and only only check pairs ```(i, j)``` where ```i<j```. There are ways to 
-speed this up in the specific case of just integers (e.g., sort the list in O(N log(N)) and then compute pairwise 
-differences in O(N) time), but if we generalize the contents of the arrays and the notion of distance we can 
-create versions where there's no way to improve on the basic O(N^2) approach, so we're going to stick with that 
+In its simple form this is an O(N^2) task because we must compare each of the N^2 pairs of values, or half of that if we take advantage of symmetry and only only check pairs ```(i, j)``` where ```i<j```. There are ways to speed this up in the specific case of just integers (e.g., sort the list in O(N log(N)) and then compute pairwise differences in O(N) time), but if we generalize the contents of the arrays and the notion of distance we can create versions where there's no way to improve on the basic O(N^2) approach, so we're going to stick with that 
 for now.
 
-The file ```src/mpd/SerialMinimumPairwiseDistance.java``` in the starter code includes a serial (non-threaded) 
-O(N^2) solution:
+The file ```src/mpd/SerialMinimumPairwiseDistance.java``` in the starter code includes a serial (non-threaded) O(N^2) solution:
 ```java
     public int minimumPairwiseDistance(int[] values) {
         int result = Integer.MAX_VALUE;
@@ -35,26 +42,19 @@ O(N^2) solution:
     }
 ```
 
-Note that we initialize ```result``` with ```Integer.MAX_VALUE```, which is essentially Java's best effort 
-at saying "positive infinity". Positive infinity is the identity of minimum (i.e., ```min(x, infinity) = x``` 
-for all x), making this a useful starting value and a reasonable default value to return in the case that the 
+Note that we initialize ```result``` with ```Integer.MAX_VALUE```, which is essentially Java's best effort at saying "positive infinity". Positive infinity is the identity of minimum (i.e., ```min(x, infinity) = x``` for all x), making this a useful starting value and a reasonable default value to return in the case that the 
 array is empty.
 
 ## The threaded solution
 
-The goal here is to implement a threaded solution that can run in parallel on hardware with multiple cores. 
-The stub for this solution is in ```src/mpd/ThreadedMinimumPairwiseDistance.java``` and there are various 
+The goal here is to implement a threaded solution that can run in parallel on hardware with multiple cores. The stub for this solution is in ```src/mpd/ThreadedMinimumPairwiseDistance.java``` and there are various 
 failing JUnit tests waiting for you to implement this class.
 
-The question with this and most parallel problems is how to divide the problem up into chunks that can be 
-processed at least semi-independently. In this case there are N^2/2 pairs (i, j) that need to be processed, 
-as illustrated in the gray triangular section below: 
+The question with this and most parallel problems is how to divide the problem up into chunks that can be processed at least semi-independently. In this case there are N^2/2 pairs (i, j) that need to be processed, as illustrated in the gray triangular section below: 
 ![Diagram illustrating all pairs (i, j) such that 0 ≤ j < i < N](https://docs.google.com/drawings/d/1I8xiDTwlbkKTPaRdcMK7PWtZbfLFHTkDI7QZr_OUPlI/pub?w=960&h=720)
-In this case I'm going to divide the set of pairs ```(i, j)``` such that ```0 ≤ j < i < N``` into four 
-equal triangular regions as illustrated below: 
+In this case I'm going to divide the set of pairs ```(i, j)``` such that ```0 ≤ j < i < N``` into four equal triangular regions as illustrated below: 
 ![Diagram illustrating region divided into four triangular sections](https://docs.google.com/drawings/d/12hyDoIqfpP2DTl5Uk97gcbIf94sABKHG4LTagZKd0nk/pub?w=960&h=720)
-Formally the four sections can be described by the following ranges, each of which can be turned into a pair of nested
-loops similar to the pair of loops in the serial solution above:
+Formally the four sections can be described by the following ranges, each of which can be turned into a pair of nestedloops similar to the pair of loops in the serial solution above:
 * Lower left: ```0 ≤ j < i < N/2```
 * Bottom right: ```N/2 ≤ j + N/2 < i < N```
 * Top right: ```N/2 ≤ j < i < N```
@@ -67,22 +67,12 @@ Our strategy, then, is:
 * Wait for each thread to finish.
 * Report the resulting global minimum.
 
-There are a bunch of ways one could do this, but I created an (inner) class for each of the four sections 
-(using creative names like ```LowerLeft```). Each of these implemented ```Runnable``` and their ```run()``` 
-method was very similar to the nested loops in the serial solution above, but with the bounds on the loops
-changed to cover just the pairs assigned to that section. When the nested loops finish, I call a 
-```updateGlobalResult(localResult)``` method in ```ThreadedMinimumPairwiseDistance``` that compares
-```localResult``` to ```globalResult``` updating ```globalResult``` to be ```localResult``` if ```localResult```
-is smaller than the previous ```globalResult```.
+There are a bunch of ways one could do this, but I created an (inner) class for each of the four sections (using creative names like ```LowerLeft```). Each of these implemented ```Runnable``` and their ```run()``` method was very similar to the nested loops in the serial solution above, but with the bounds on the loops changed to cover just the pairs assigned to that section. When the nested loops finish, I call a ```updateGlobalResult(localResult)``` method in ```ThreadedMinimumPairwiseDistance``` that compares
+```localResult``` to ```globalResult``` updating ```globalResult``` to be ```localResult``` if ```localResult``` is smaller than the previous ```globalResult```.
 
-While creating four inner classes is arguably kind of gross, having them as _inner_ classes does simplify
-a few things because we can directly access fields (like the ```values``` array) and methods 
-(like ```updateGlobalResult()```) in the containing class. You can make all this work without the inner classes,
+While creating four inner classes is arguably kind of gross, having them as _inner_ classes does simplify a few things because we can directly access fields (like the ```values``` array) and methods (like ```updateGlobalResult()```) in the containing class. You can make all this work without the inner classes,
 but you'll need to find other ways to pass information around.
 
-Make sure to wait for all the threads to finish (I'd use ```join()```) before returning the global 
-minimum. Remember that ```.start()``` will return _immediately_ even if the actual run method has a done of
-complex work to do, so after you start them all, you have to wait for them all to finish before you can continue.
+Make sure to wait for all the threads to finish (I'd use ```join()```) before returning the global minimum. Remember that ```.start()``` will return _immediately_ even if the actual run method has a done of complex work to do, so after you start them all, you have to wait for them all to finish before you can continue.
 
-You also need to remember to synchronize the ```updateGlobalResult()``` method so that two threads can't
-collide and mess each other up with they try to call that method at the same time.
+You also need to remember to synchronize the ```updateGlobalResult()``` method so that two threads can't collide and mess each other up with they try to call that method at the same time.
