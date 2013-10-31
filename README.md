@@ -54,7 +54,7 @@ The question with this and most parallel problems is how to divide the problem u
 ![Diagram illustrating all pairs (i, j) such that 0 ≤ j < i < N](https://docs.google.com/drawings/d/1I8xiDTwlbkKTPaRdcMK7PWtZbfLFHTkDI7QZr_OUPlI/pub?w=960&h=720)
 In this case I'm going to divide the set of pairs ```(i, j)``` such that ```0 ≤ j < i < N``` into four equal triangular regions as illustrated below: 
 ![Diagram illustrating region divided into four triangular sections](https://docs.google.com/drawings/d/12hyDoIqfpP2DTl5Uk97gcbIf94sABKHG4LTagZKd0nk/pub?w=960&h=720)
-Formally the four sections can be described by the following ranges, each of which can be turned into a pair of nestedloops similar to the pair of loops in the serial solution above:
+Formally the four sections can be described by the following ranges, each of which can be turned into a pair of nested loops similar to the pair of loops in the serial solution above:
 * Lower left: ```0 ≤ j < i < N/2```
 * Bottom right: ```N/2 ≤ j + N/2 < i < N```
 * Top right: ```N/2 ≤ j < i < N```
