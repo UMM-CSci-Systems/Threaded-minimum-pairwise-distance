@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class SerialMinimumPairwiseDistanceTest {
 
-	public static final int NUM_VALUES = 1000000;
+	public static final int NUM_VALUES = 100000;
 	private MinimumPairwiseDistance mpd;
 
 	@Before
