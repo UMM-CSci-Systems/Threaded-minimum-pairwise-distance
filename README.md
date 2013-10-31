@@ -33,4 +33,4 @@ Note that we initialize ```result``` with ```Integer.MAX_VALUE```, which is esse
 
 The goal here is to implement a threaded solution that can run in parallel on hardware with multiple cores. The stub for this solution is in ```src/mpd/ThreadedMinimumPairwiseDistance.java``` and there are various failing JUnit tests waiting for you to implement this class.
 
-The question with this and most parallel problems is how to divide the problem up into chunks that can be processed at least semi-independently. In this case there are N^2/2 pairs (i, j) that need to be processed. 
+The question with this and most parallel problems is how to divide the problem up into chunks that can be processed at least semi-independently. In this case there are N^2/2 pairs (i, j) that need to be processed, as illustrated in the gray triangular section below ![Diagram illustrating all pairs (i, j) such that 0 ≤ j < i < N](https://docs.google.com/drawings/d/1I8xiDTwlbkKTPaRdcMK7PWtZbfLFHTkDI7QZr_OUPlI/pub?w=960&h=720).
