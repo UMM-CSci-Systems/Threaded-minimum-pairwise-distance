@@ -3,6 +3,24 @@
 This is the starter code for the Minimum Pairwise Distance (sub)lab. The goal of this lab is to use threading 
 to parallize an expensive (in this case O(N^2)) computation and see that this indeed yields performance gains.
 
+You should fork this repo and then follow the write-up here.
+
+In this lab there are two classes with a main method, SerialMain and ThreadedMain. Our classes are in a package so you'll have to include that when you make the call. It will look like this: 
+ 
+<span class="twiki-macro CODE"></span>
+
+    time    java mpd.SerialMain 1000 
+    
+<span class="twiki-macro ENDCODE"></span>
+
+Just replace SerialMain with ThreadedMain to run that one. The parameter can (and probably should) be modified to different values to compare the results. You'll get timing output something like
+
+    real    0m9.325s
+    user    0m27.580s
+    sys     0m0.228s
+
+The "real" entry is essentially the wall clock time the process took to complete. "user" is the amount of CPU time was spent running the code, and "sys" is time spent in system processes such as allocating memory or reading and writing files. On a single core system "real" is roughly the sum of "user" and "sys" (plus some noise). On a multi-core system, "user" can be bigger than real (as in the example above) because multiple threads running in parallel all add to the "user" value. So if you have two threads that each run for 10 seconds, the wall-clock time ("real") might be 12s, but the "user" time might be 23s.
+
 ## The problem
 
 Given an array ```values``` of ```N``` integers, the task is to find the smallest absolute distance between 
