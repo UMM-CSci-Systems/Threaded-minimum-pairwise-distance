@@ -3,8 +3,6 @@
 This is the starter code for the Minimum Pairwise Distance lab. The goal of this lab is to use threading 
 to parallize an expensive (in this case O(N^2)) computation and see that this indeed yields performance gains.
 
-You should fork this repo and then follow the write-up here.
-
 In this lab there are two classes with a main method, SerialMain and ThreadedMain. Our classes are in a package so you'll have to include that when you make the call. It will look like this: 
  
 <span class="twiki-macro CODE"></span>
