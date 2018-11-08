@@ -3,12 +3,12 @@ package mpd;
 public class SerialMinimumPairwiseDistance implements MinimumPairwiseDistance {
 
     @Override
-    public int minimumPairwiseDistance(int[] values) {
-        int result = Integer.MAX_VALUE;
+    public long minimumPairwiseDistance(int[] values) {
+        long result = Integer.MAX_VALUE;
         for (int i = 0; i < values.length; ++i) {
             for (int j = 0; j < i; ++j) {
                 // Gives us all the pairs (i, j) where 0 <= j < i < values.length
-                int diff = Math.abs(values[i] - values[j]);
+                long diff = Math.abs(values[i] - values[j]);
                 if (diff < result) {
                     result = diff;
                 }
