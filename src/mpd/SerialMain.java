@@ -14,7 +14,7 @@ public class SerialMain {
             values[i] = random.nextInt();
         }
         
-        int result = mpd.minimumPairwiseDistance(values);
+        long result = mpd.minimumPairwiseDistance(values);
         System.out.println("The minimum distance was " + result);
     }
 
