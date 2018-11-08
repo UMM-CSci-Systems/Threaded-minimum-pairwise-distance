@@ -11,7 +11,7 @@ public class ThreadedMinimumPairwiseDistanceTest {
     private MinimumPairwiseDistance mpd;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mpd = new ThreadedMinimumPairwiseDistance();
     }
 

@@ -11,7 +11,7 @@ public class SerialMinimumPairwiseDistanceTest {
     private MinimumPairwiseDistance mpd;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mpd = new SerialMinimumPairwiseDistance();
     }
 
