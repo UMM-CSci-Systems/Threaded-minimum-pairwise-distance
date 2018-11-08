@@ -2,6 +2,6 @@ package mpd;
 
 public interface MinimumPairwiseDistance {
 
-    int minimumPairwiseDistance(int[] values);
+    long minimumPairwiseDistance(int[] values);
 
 }
