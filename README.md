@@ -94,3 +94,8 @@ While creating four inner classes is arguably kind of gross, having them as _inn
 Make sure to wait for all the threads to finish (I'd use `join()`) before returning the global minimum. Remember that `.start()` will return _immediately_ even if the actual run method has a ton of complex work to do, so after you start them all, you have to wait for them all to finish before you can continue.
 
 You also need to remember to synchronize the `updateGlobalResult()` method so that two threads can't collide and mess each other up with they try to call that method at the same time.
+
+## Debugging the timing tests
+
+Groups often find it challenging to debug the timing tests. We have some notes in a
+[separate Markdown file](debugging-timing-tests.md) that might help with that.
