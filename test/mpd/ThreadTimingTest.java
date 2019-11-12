@@ -14,9 +14,9 @@ public class ThreadTimingTest {
     public void testSortingTiming() {
         Random random = new Random();
         MinimumPairwiseDistance serialMPD = new SerialMinimumPairwiseDistance();
-        int[] serialValues = new int[NUM_VALUES];
+        long[] serialValues = new long[NUM_VALUES];
         MinimumPairwiseDistance threadedMPD = new ThreadedMinimumPairwiseDistance();
-        int[] threadedValues = new int[NUM_VALUES];
+        long[] threadedValues = new long[NUM_VALUES];
         for (int i = 0; i < NUM_VALUES; ++i) {
             serialValues[i] = random.nextInt();
             threadedValues[i] = serialValues[i];
