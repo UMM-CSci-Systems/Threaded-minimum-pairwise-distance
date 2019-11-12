@@ -9,9 +9,12 @@ public class SerialMain {
         MinimumPairwiseDistance mpd = new SerialMinimumPairwiseDistance();
 
         Random random = new Random();
-        int[] values = new int[numValues];
+        long[] values = new long[numValues];
         for (int i = 0; i < numValues; ++i) {
             values[i] = random.nextInt();
+            //We use random.nextInt here otherwise the code will not function properly
+            //See https://github.com/UMM-CSci-Systems/Threaded-minimum-pairwise-distance/issues/3
+            //for more details
         }
         
         long result = mpd.minimumPairwiseDistance(values);

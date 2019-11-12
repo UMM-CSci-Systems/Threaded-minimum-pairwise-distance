@@ -45,7 +45,7 @@ The file ```src/mpd/SerialMinimumPairwiseDistance.java``` in the starter code in
 
 ```java
     public long minimumPairwiseDistance(int[] values) {
-        long result = Integer.MAX_VALUE;
+        long result = Long.MAX_VALUE;
         for (int i = 0; i < values.length; ++i) {
             for (int j = 0; j < i; ++j) {
                 // Gives us all the pairs (i, j) where 0 ≤ j < i < values.length
@@ -59,7 +59,7 @@ The file ```src/mpd/SerialMinimumPairwiseDistance.java``` in the starter code in
     }
 ```
 
-Note that we initialize ```result``` with ```Integer.MAX_VALUE```, which is essentially Java's best effort at saying "positive infinity". Positive infinity is the identity of minimum (i.e., ```min(x, infinity) = x``` for all x), making this a useful starting value and a reasonable default value to return in the case that the 
+Note that we initialize ```result``` with ```Long.MAX_VALUE```, which is essentially Java's best effort at saying "positive infinity". Positive infinity is the identity of minimum (i.e., ```min(x, infinity) = x``` for all x), making this a useful starting value and a reasonable default value to return in the case that the 
 array is empty.
 
 ## The threaded solution
